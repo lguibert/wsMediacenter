@@ -1,0 +1,15 @@
+{
+    "dateOrdering": "05-03-2015 15:02:00", 
+    "folders": [
+        "D://"
+    ], 
+    "videoFormats": [
+        "mkv", 
+        "avi"
+    ], 
+    "audioFormats": [
+        "mp3", 
+        "flac", 
+        "ogg"
+    ]
+}
