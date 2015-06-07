@@ -6,45 +6,49 @@ import os
 
 import re
 import pdb
+from uuid import uuid4
 
 import time
 
+# ------------------------------------
+avoid = ['$RECYCLE.BIN']
+# ------------------------------------
 
-def get_files(request):
+
+def get_files(request, folders=None):
     settings = setting_views.open_file_settings()
-    folders = settings['folders']
 
-    #daddy = [None, [],[],[]]
+    if folders is None:
+        folders = settings['folders']
+
     tmpsfile = []
     tmpssub = []
-    rootfolder = None
+    rootfolder = []
     for folder in folders:
         for root, subdirs, files in os.walk(folder):
-            tmpssub.append(subdirs)
+            for sub in subdirs:
+                if secure_dir(sub):
+                    tmpssub.append([sub, str(uuid4())])
             tmpsfile.append(files)
-            rootfolder = root
+            rootfolder.append(root)
             break
 
-    #plus pour le rangement
-    '''
-    final = []
-    for tmp in tmps:
-        if tmp not in final:
-            match = re.search("\.[a-z]{1,4}$", tmp)
-            if match :
-                final.append(tmp)
-
-    final = classify_files(final)
-    '''
 
     tmpssub = ordering(unnuller(tmpssub))
 
     return setting_views.send_response([tmpssub, tmpsfile, rootfolder])
 
 
+def secure_dir(dir):
+    if dir not in avoid:
+        return True
+    else:
+        return False
+
 def ordering(array):
     for a in array:
-        a.sort()
+        if isinstance(a, list):
+            a.sort()
 
     return array
 
