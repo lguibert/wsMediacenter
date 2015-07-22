@@ -2,9 +2,9 @@ from django.conf.urls import include, url, patterns
 from django.contrib import admin
 
 urlpatterns = patterns('webservice.views',
-    url(r'settings/add/(?P<category>[a-z]{5,})/(?P<value>[a-z1-9]{3,})', 'add_setting'),
-    url(r'settings/delete/(?P<category>[a-z]{5,})/(?P<value>[a-z1-9]{3,})', 'delete_setting'),
-    url(r'settings/?', "get_settings"),
+    url(r'settings/add/(?P<category>[a-z]{5,})/(?P<value>[a-z1-9%/:A-Z]{1,})', 'add_setting'),
+    url(r'settings/delete/(?P<category>[a-z]{5,})/(?P<value>[a-z1-9%/:A-Z]{1,})', 'delete_setting'),
+    url(r'settings/?', 'get_settings'),
 
     url(r'files/?', 'get_files'),
     url(r'files/(?P<folder>[a-z]{1,})/?', 'get_files'),

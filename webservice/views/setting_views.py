@@ -2,6 +2,7 @@
 import json
 #import re
 from django.http import HttpResponse
+#from urllib import unquote
 
 
 #----------------------------- GLOBALS VARIABLES -----------------------------
@@ -37,6 +38,8 @@ def delete_setting(request, category, value):
     category = check_category(category)
     data = file[category]
 
+    print "La valeur est: ",value
+
     for d in data:
         if d == value:
             data.remove(d)
@@ -71,9 +74,9 @@ def update_file(file):
 def error_messages(id_message, value=''):
 
     messages = {
-        0 : "Une erreur est survenue du "u"côté serveur.",
-        1 : 'Erreur: '+value+ u' existe déjà.',
-        2 : 'Erreur lors de l\'ouverture du fichier de configuration.'
+        0 : "Une erreur est survenue du cote serveur.",
+        1 : "Erreur: "+value+ "existe deja.",
+        2 : "Erreur lors de l\'ouverture du fichier de configuration."
     }
 
     return messages.get(id_message)

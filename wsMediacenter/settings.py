@@ -106,5 +106,5 @@ USE_TZ = True
 STATIC_URL = '/assets/'
 
 STATIC_DIRS = (
-    "/home/lguibert/projects/wsMediacenter/webservice/assets/",
+    "C:\projects\wsMediacenter\webservice\assets",
 )
