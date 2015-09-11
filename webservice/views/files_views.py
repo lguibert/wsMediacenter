@@ -38,12 +38,43 @@ def get_files(request, folders=None):
                 if secure_dir(sub):
                     tmpssub.append(sub)
 
-            final.append([root, tmpssub, files])
+            final.append([trace_navigation(root), tmpssub, files])
             break
 
-    pprint.pprint(final)
-
     return setting_views.send_response(final)
+
+
+def trace_navigation(root):
+    sroot = root;
+    splitroot = root.split("/")
+
+    trace = "<a href='#' ng-click='findChildren(\""+splitroot[0] + '/' + splitroot[1]+"\")'>"+splitroot[0] + '/' + splitroot[1]+"</a>"
+
+    return trace
+
+
+'''
+
+    function traceNavigation (root){
+        console.log(root);
+        var sroot = root;
+        var splitroot = root.split("/");
+
+        var trace = "<a href='#' ng-click='findChildren(\""+splitroot[0] + '/' + splitroot[1]+"\")'>"+splitroot[0] + '/' + splitroot[1]+"</a>";
+
+        console.log(trace);
+
+        /*for(var i = 2; i < splitroot.length; i++){
+
+        }*/
+
+
+
+
+        return trace;
+    };
+'''
+
 
 
 def secure_dir(dir):
