@@ -1,12 +1,13 @@
 {
     "dateOrdering": "05-03-2015 15:02:00", 
     "folders": [
-        "D://", 
-        "E://Series"
+        "E:/test", 
+        "E:/test2"
     ], 
     "videoFormats": [
         "mkv", 
-        "avi"
+        "avi", 
+        "mp4"
     ], 
     "audioFormats": [
         "mp3", 

@@ -10,8 +10,14 @@ from uuid import uuid4
 
 import time
 
+import urllib
+import urlparse
+import pprint
+
 # ------------------------------------
 avoid = ['$RECYCLE.BIN']
+
+
 # ------------------------------------
 
 
@@ -20,23 +26,24 @@ def get_files(request, folders=None):
 
     if folders is None:
         folders = settings['folders']
+    else:
+        folders = [urllib.unquote_plus(folders)]
 
-    tmpsfile = []
-    tmpssub = []
-    rootfolder = []
+    final = []
+
     for folder in folders:
+        tmpssub = []
         for root, subdirs, files in os.walk(folder):
             for sub in subdirs:
                 if secure_dir(sub):
-                    tmpssub.append([sub, str(uuid4())])
-            tmpsfile.append(files)
-            rootfolder.append(root)
+                    tmpssub.append(sub)
+
+            final.append([root, tmpssub, files])
             break
 
+    pprint.pprint(final)
 
-    tmpssub = ordering(unnuller(tmpssub))
-
-    return setting_views.send_response([tmpssub, tmpsfile, rootfolder])
+    return setting_views.send_response(final)
 
 
 def secure_dir(dir):
@@ -45,12 +52,14 @@ def secure_dir(dir):
     else:
         return False
 
+
 def ordering(array):
     for a in array:
         if isinstance(a, list):
             a.sort()
 
     return array
+
 
 def unnuller(array):
     tmp = []
@@ -71,13 +80,14 @@ def classify_files(files):
 
     for file in files:
         for audio in audios:
-            if re.search('\.'+audio+'$', file):
+            if re.search('\.' + audio + '$', file):
                 aud.append([delete_extension(file), audio])
         for video in videos:
-            if re.search("\."+video+'$', file):
+            if re.search("\." + video + '$', file):
                 vid.append([delete_extension(file), video])
 
     return [aud, vid]
+
 
 def delete_extension(file):
     return file.split('.')[0]
