@@ -32,49 +32,27 @@ def get_files(request, folders=None):
     final = []
 
     for folder in folders:
-        tmpssub = []
-        for root, subdirs, files in os.walk(folder):
-            for sub in subdirs:
-                if secure_dir(sub):
-                    tmpssub.append(sub)
+        if allowed_access(folder, settings['folders']):
+            tmpssub = []
+            for root, subdirs, files in os.walk(folder):
+                for sub in subdirs:
+                    if secure_dir(sub):
+                        tmpssub.append(sub)
 
-            final.append([trace_navigation(root), tmpssub, files])
-            break
+                final.append([root, tmpssub, files])
+                break
 
     return setting_views.send_response(final)
 
 
-def trace_navigation(root):
-    sroot = root;
-    splitroot = root.split("/")
+def allowed_access(path, folders):
+    path = path.split("/")
+    base = path[0] + '/' + path[1]
 
-    trace = "<a href='#' ng-click='findChildren(\""+splitroot[0] + '/' + splitroot[1]+"\")'>"+splitroot[0] + '/' + splitroot[1]+"</a>"
-
-    return trace
-
-
-'''
-
-    function traceNavigation (root){
-        console.log(root);
-        var sroot = root;
-        var splitroot = root.split("/");
-
-        var trace = "<a href='#' ng-click='findChildren(\""+splitroot[0] + '/' + splitroot[1]+"\")'>"+splitroot[0] + '/' + splitroot[1]+"</a>";
-
-        console.log(trace);
-
-        /*for(var i = 2; i < splitroot.length; i++){
-
-        }*/
-
-
-
-
-        return trace;
-    };
-'''
-
+    if base in folders:
+        return True
+    else:
+        return False
 
 
 def secure_dir(dir):
